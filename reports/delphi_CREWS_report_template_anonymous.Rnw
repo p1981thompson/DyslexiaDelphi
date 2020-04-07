@@ -2,7 +2,7 @@
 % --packages for plots-- %
 \usepackage{graphicx}
 \usepackage{caption}
-\usepackage{subcaption}
+%\usepackage{subcaption}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{authblk}
@@ -28,7 +28,7 @@
 
 \mdfdefinestyle{mystyle}{leftmargin=100,rightmargin=100,linecolor=black,roundcorner=10pt,backgroundcolor=blue!20}
 
-\graphicspath{{H:/DVMB/CREWS/terminology/reports/}}
+\graphicspath{{/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/}}
  \geometry{
  a4paper,
  total={210mm,297mm},
@@ -145,15 +145,15 @@ The following section provides a more detailed investigation on an item-by-item 
 \end{figure}
 
 \clearpage
-\mysection{Delphi analysis results:Your responses relative to rest of panel}{CREWS TWO} 
-\SweaveOpts{prefix.string=\Sexpr{paste(getwd(),"/terminology/reports/",panel.member,sep="")}}
+\mysection{Delphi analysis results:Your responses relative to rest of panel}{CREWS} 
+\SweaveOpts{prefix.string=\Sexpr{paste(getwd(),"/reports/",panel.member,sep="")}}
 
 <<results=hide,echo=FALSE>>=
 
 if("package:likert" %in% search()){detach("package:likert")}
 
 require(readxl)
-qualtrics.terminology.Test<-read_excel("H:/DVMB/CREWS/terminology/test data/CREWS_terminology.xlsx", sheet="CREWS_T")
+qualtrics.terminology.Test<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology.xlsx", sheet="CREWS_T")
 
 
 ##############################
@@ -173,12 +173,12 @@ qualtrics.terminology.Test<-read_excel("H:/DVMB/CREWS/terminology/test data/CREW
 #   r.data[,i]<-qualtrics.data.Test2[,statements_R1_ind[i]]
 #   #colnames(r.data)[i]<-colnames(delphi.data2)[statements_R1_ind[i]]
 # }
-for(i in 1:13)
+for(i in 1:16)
 {
   v.data.T[,i]<-qualtrics.terminology.Test[,statements_T1_ind[i]]
   #colnames(v.data2)[i]<-colnames(delphi.data2)[statements_V1_ind[i]]
 }
-for(i in 1:13)
+for(i in 1:16)
 {
   comments.T[,i]<-qualtrics.terminology.Test[,comments_ind_T[i]]
   #colnames(comments)[i]<-colnames(delphi.data2)[comments_ind[i]]
@@ -196,7 +196,7 @@ for(i in 2:length(delphi.Term.combine)){delphi.Term.combine[,i]<-factor(delphi.T
 
 require(car)
 require(gridExtra)
- for(i in 2:length(delphi.Term.combine)){delphi.Term.combine[,i]<-recode(delphi.Term.combine[,i],"1='Strongly agree';2='Agree';3='Neutral';4='Disagree';5='Strongly disagree'")}
+ for(i in 2:length(delphi.Term.combine)){delphi.Term.combine[,i]<-car::recode(delphi.Term.combine[,i],"1='Strongly agree';2='Agree';3='Neutral';4='Disagree';5='Strongly disagree'")}
 
 
 for(i in 2:length(delphi.Term.combine)){
@@ -205,8 +205,9 @@ for(i in 2:length(delphi.Term.combine)){
 delphi.data2<-delphi.Term.combine
 
 
-delphi.Terminology.statements<-read.xlsx("H:/DVMB/CREWS/terminology/test data/delphi terminology statements.xlsx",sheetName="delphi T statements2",stringsAsFactors =FALSE)
-delphi.Terminology.statements<-delphi.Terminology.statements[1:13,1:2]
+delphi.Terminology.statements<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/delphi terminology statements.xlsx",sheet="delphi T statements2")
+delphi.Terminology.statements<-as.data.frame(delphi.Terminology.statements)
+delphi.Terminology.statements<-delphi.Terminology.statements[1:16,1:2]
 
 delphi.Term.combine<-delphi.Term.combine[,-1]
 
@@ -223,18 +224,14 @@ names(delphi.Term.combine2)[1]<-"username"
 \SweaveOpts{width=12, height=14}
 
 
-%% FIGURE A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[htp!]
-\centering
-\includegraphics[scale=1]{FigA.jpg}
-\caption{Figure detailing the proposed assessment/identification framework}
-\label{fig:A}
-\end{figure}
+
 
 <<results=tex,echo=FALSE>>=
   require(xtable)
   require(readxl)
-delphi.T.comments<-read_excel("H:\\DVMB\\CREWS\\terminology\\test data\\CREWS_terminology.xlsx",sheet="Comments",stringsAsFactors =FALSE)
+delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology.xlsx",sheet="Comments")
+
+delphi.T.comments <- as.data.frame(delphi.T.comments)
 
 comment1<-delphi.T.comments[!is.na(delphi.T.comments[,18])==TRUE,c(1,18)]
 
@@ -251,7 +248,8 @@ val<-xtable(comment1, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each st
  addtorow$pos <- as.list(rws)
  addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
 
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
+#print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
+ 
 @
 
 
@@ -265,8 +263,9 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 
 <<results=hide,echo=FALSE>>=
 require(readxl)
-source("H:/DVMB/CREWS_delphi/reports/newfunsT.R")
-delphi.statements<-read_excel("H:\\DVMB\\CREWS_delphi\\test data\\delphi terminology statements.xlsx",sheetName="delphi T statements3",stringsAsFactors =FALSE)
+source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/newfunsT.R")
+delphi.statements<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/delphi terminology statements.xlsx",sheet="delphi T statements3")
+delphi.statements <- as.data.frame(delphi.statements)
 @
 
 %\subsubsection{\Sexpr{delphi.statements[1,2]}}
@@ -278,7 +277,7 @@ require(reshape)
 require(gridExtra)
 require(grid)
 require(ggplot2)
-source("H:/DVMB/CREWS_delphi/terminology/reports/newfunsT.R")
+source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/newfunsT.R")
 P1A<-likert(delphi.Term.combine[,1,drop=FALSE])
 Item<-strwrap(names(P1A$items),width=120)
 p1<-plot(P1A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank()) 
@@ -298,7 +297,7 @@ grid.arrange(p1,phist1,nrow=1,ncol=2,widths=c(0.75,0.25))
 \begin{figure}[h!]
 \begin{center}
 <<label=fig1B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
-source("H:/DVMB/CREWS_delphi/reports/likert_density3.R")
+source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/likert_density3.R")
 
 delphi.Term.combine3<-delphi.Term.combine
 for(i in 1:16){names(delphi.Term.combine3)[i]<-paste(strwrap(names(delphi.Term.combine3)[i], width = 150), collapse="\n")}
@@ -316,8 +315,8 @@ if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,2,drop
 <<results=tex,echo=FALSE>>=
   require(xtable)
   require(readxl)
-delphi.T.comments<-read_excel("H:\\DVMB\\CREWS_delphi\\test data\\CREWS_terminology.xlsx",sheet="Comments",stringsAsFactors =FALSE)
-
+delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology.xlsx",sheet="Comments")
+delphi.T.comments<-as.data.frame(delphi.T.comments)
 comment1<-delphi.T.comments[!is.na(delphi.T.comments[,2])==TRUE,c(1,2)]
 
 for(i in 1:length(comment1[,1]))
@@ -381,6 +380,7 @@ if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop
 #delphi.T.comments<-read_excel("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheet="comment",stringsAsFactors =FALSE)
 
 comment2<-delphi.T.comments[!is.na(delphi.T.comments[,3])==TRUE,c(1,3)]
+comment2<-as.data.frame(comment2)
 
 for(i in 1:length(comment2[,1]))
 {

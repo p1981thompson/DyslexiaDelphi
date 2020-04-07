@@ -1,5 +1,5 @@
 
-label.wrap.mod2<-function(value, width = 25) 
+label_wrap_mod2<-function(value, width = 25) 
 {
   sapply(strwrap(as.character(value), width = width, simplify = FALSE), 
          paste, collapse = "\n")
@@ -101,4 +101,9 @@ likert.histogram.plot2<-function (l, xlab = "N", plot.missing = TRUE, bar.color 
   }
   class(p) <- c("likert.bar.plot", class(p))
   return(p)
+}
+
+abs_formatter<-function (x)
+{
+  return(abs(x))
 }
