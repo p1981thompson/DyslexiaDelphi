@@ -1,8 +1,8 @@
-#Load data from Qualtrics CREWS #
+#Load data from Qualtrics RECAP #
 
 #07-04-2020#
 
-
+setwd('/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/')
 library(readxl)
 library(psych)
 library(tools)

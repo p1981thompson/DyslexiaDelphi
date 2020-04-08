@@ -18,7 +18,7 @@ likert.density.plot3<-function (likert, facet = TRUE, bw = 0.5, legend, ...)
                                    fill = Item, group = Item)) + geom_polygon(alpha = 0.05) + 
       geom_path() + scale_x_continuous(breaks = 1:likert$nlevels, 
                                        labels = labels,limits=c(-0.5,6)) + xlab("") + ylab("") + theme(axis.text.y = element_blank(), 
-                                                                                      axis.ticks.y = element_blank())
+                                                                                      axis.ticks.y = element_blank(), axis.text.x = element_text(angle = 30, hjust = 1))
     if (facet) {
       p <- p + facet_wrap(~Item, ncol = 1) + theme(legend.position = "none")
     }
@@ -39,8 +39,7 @@ likert.density.plot3<-function (likert, facet = TRUE, bw = 0.5, legend, ...)
     p <- ggplot(items.density, aes(x = x, y = y, color = Group, 
                                    fill = Group, group = Group)) + geom_polygon(alpha = 0.05) + 
       geom_path() + facet_wrap(~Item, ncol = 1) + scale_x_continuous(breaks = 1:likert$nlevels, 
-                                                                     labels = labels,limits=c(-0.5,6)) + xlab("") + ylab("") + theme(axis.text.y = element_blank(), 
-                                                                                                                    axis.ticks.y = element_blank())
+                                                                     labels = labels,limits=c(-0.5,6)) + xlab("") + ylab("") + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.text.x = element_text(angle = 30, hjust = 1))
   }
   if (!missing(legend)) {
     p <- p + labs(fill = legend, color = legend)
