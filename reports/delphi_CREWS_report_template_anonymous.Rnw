@@ -205,10 +205,6 @@ names(delphi.Term.combine2)[1]<-"username"
 
 @
 
-\SweaveOpts{width=12, height=14}
-
-
-
 
 <<results=tex,echo=FALSE>>=
   require(xtable)
