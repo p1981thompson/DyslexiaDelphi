@@ -7,10 +7,14 @@ library(readxl)
 library(psych)
 library(tools)
 
-qualtrics.Terminology.data<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CATALISE_terminology.xlsx",sheet="CATALISE_T")
+qualtrics.Terminology.data<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology.xlsx",sheet="CREWS_T")#,col_types='text')
+
+qualtrics.Terminology.data<-as.data.frame(qualtrics.Terminology.data)
 
 Delphi.T.members<-qualtrics.Terminology.data$ExternalDataReference
-Delphi.T.members <- factor(Delphi.T.members, levels=levels(droplevels(Delphi.T.members)))
+#Delphi.T.members <- factor(Delphi.T.members)
+#Delphi.T.members <- factor(Delphi.T.members, levels=levels(droplevels(Delphi.T.members)))
+
 
 processInput_T_Anon <- function(panel.member) { 
   temp <<- environment()
