@@ -276,7 +276,7 @@ p1
 source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/likert_density3.R")
 
 delphi.Term.combine3<-delphi.Term.combine
-for(i in 1:26){names(delphi.Term.combine3)[i]<-paste(strwrap(names(delphi.Term.combine3)[i], width = 150), collapse="\n")}
+for(i in 1:30){names(delphi.Term.combine3)[i]<-paste(strwrap(names(delphi.Term.combine3)[i], width = 150), collapse="\n")}
 Q1A<-likert(delphi.Term.combine3[,1,drop=FALSE])
 
 if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,2,drop=FALSE])==TRUE){likert.density.plot3(Q1A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
@@ -654,7 +654,6 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \clearpage % Better use FloatBarrier here
 %%statement 8 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysubsection{Risk factors}{\small{Risk factors}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -1115,7 +1114,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 <<label=fig16A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
 P16A<-likert(delphi.Term.combine[,16,drop=FALSE])
-Item<-strwrap(names(P14A$items),width=150)
+Item<-strwrap(names(P16A$items),width=150)
 p16<-plot(P16A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist16 <- likert.histogram.plot2(P16A)
 # f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
@@ -1845,7 +1844,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 <<label=fig29A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
 P29A<-likert(delphi.Term.combine[,29,drop=FALSE])
-Item<-strwrap(names(P25A$items),width=150)
+Item<-strwrap(names(P29A$items),width=150)
 p29<-plot(P29A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist25 <- likert.histogram.plot2(P25A)
 # f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}

@@ -278,7 +278,7 @@ p1
 source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/likert_density3.R")
 
 delphi.Term.combine3<-delphi.Term.combine
-for(i in 1:26){names(delphi.Term.combine3)[i]<-paste(strwrap(names(delphi.Term.combine3)[i], width = 150), collapse="\n")}
+for(i in 1:30){names(delphi.Term.combine3)[i]<-paste(strwrap(names(delphi.Term.combine3)[i], width = 150), collapse="\n")}
 Q1A<-likert(delphi.Term.combine3[,1,drop=FALSE])
 
 if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,2,drop=FALSE])==TRUE){likert.density.plot3(Q1A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
@@ -659,7 +659,6 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \clearpage % Better use FloatBarrier here
 %%statement 8 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysubsection{Risk factors}{\small{Risk factors}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -1118,7 +1117,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 <<label=fig16A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
 P16A<-likert(delphi.Term.combine[,16,drop=FALSE])
-Item<-strwrap(names(P14A$items),width=150)
+Item<-strwrap(names(P16A$items),width=150)
 p16<-plot(P16A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist16 <- likert.histogram.plot2(P16A)
 # f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
@@ -1743,7 +1742,7 @@ p27<-plot(P27A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_gr
 # grid.arrange(p25,phist25,ncol=2,widths=c(0.75,0.25))
 p27
 @
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig25A",sep="")}}
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig27A",sep="")}}
 \end{center}
 \caption{Percentage of panel members in each response category to statement 27. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
 \label{fig:twentysevenA}
@@ -1797,7 +1796,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 <<label=fig28A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
 P28A<-likert(delphi.Term.combine[,28,drop=FALSE])
-Item<-strwrap(names(P26A$items),width=150)
+Item<-strwrap(names(P28A$items),width=150)
 p28<-plot(P28A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist26 <- likert.histogram.plot2(P26A)
 # f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
@@ -1857,7 +1856,7 @@ p29<-plot(P29A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_gr
 # grid.arrange(p25,phist25,ncol=2,widths=c(0.75,0.25))
 p29
 @
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig25A",sep="")}}
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig29A",sep="")}}
 \end{center}
 \caption{Percentage of panel members in each response category to statement 29. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
 \label{fig:twentynineA}
@@ -1870,7 +1869,7 @@ Q29A<-likert(delphi.Term.combine3[,29,drop=FALSE])
 if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,30,drop=FALSE])==TRUE){
 likert.density.plot3(Q29A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
 if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,30,drop=FALSE])==FALSE){
-likert.density.plot3(Q29A, type="density",legend.position="bottom",wrap=110)+ geom_vline(xintercept = as.numeric(delphi.Term.combine.N[delphi.Term.combine2$username==panel.member,27]), colour = "red", size=1.5) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
+likert.density.plot3(Q29A, type="density",legend.position="bottom",wrap=110)+ geom_vline(xintercept = as.numeric(delphi.Term.combine.N[delphi.Term.combine2$username==panel.member,29]), colour = "red", size=1.5) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig29B",sep="")}}
 \end{center}
@@ -1911,7 +1910,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 <<label=fig30A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
 P30A<-likert(delphi.Term.combine[,30,drop=FALSE])
-Item<-strwrap(names(P26A$items),width=150)
+Item<-strwrap(names(P30A$items),width=150)
 p30<-plot(P30A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist26 <- likert.histogram.plot2(P26A)
 # f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
@@ -2021,7 +2020,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \end{figure}
 \end{minipage} \hfill 
 \begin{minipage}{0.6\textwidth}
-\textbf{Professor TRish Greenhalgh, \newline
+\textbf{Professor Trish Greenhalgh, \newline
 Health Experiences Research Group},\newline
 \small{Nuffield Department of Primary Care Health Sciences,\newline
 Radcliffe Observatory Quarter,\newline
