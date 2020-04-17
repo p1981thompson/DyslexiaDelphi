@@ -13,6 +13,7 @@
 \usepackage{booktabs}
 \usepackage{rotating}
 \usepackage{longtable}
+\usepackage{hyperref}
 \usepackage{xcolor,colortbl,color}
 \usepackage{color}
 \usepackage[nogin]{Sweave}
@@ -73,10 +74,11 @@ Jericho,
 OX2 6NW,
 UK.}}
 \affil[2]{\small{Department of Experimental Psychology,
-Tinbergen Building,
-South Parks Road,
+Radcliffe Observatory, 
+Anna Watts Building, 
+Woodstock Rd,
 Oxford,
-OX1 3UD,
+OX2 6GG,
 UK.}}
 
 
