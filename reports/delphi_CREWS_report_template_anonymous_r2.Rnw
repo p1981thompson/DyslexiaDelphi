@@ -113,13 +113,11 @@ UK.}}
 \thispagestyle{plain}\pagenumbering{roman}
  \tableofcontents
 
-\newpage
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \pagestyle{fancy}
-%\lipsum
 
-%\begin{landscape}
+\newpage
 
 \mysection{Delphi analysis results:Your responses relative to rest of panel}{RECAP} 
 \SweaveOpts{prefix.string=\Sexpr{paste(getwd(),"/reports/",panel.member,sep="")}}
@@ -255,6 +253,7 @@ require(reshape)
 require(gridExtra)
 require(grid)
 require(ggplot2)
+require(plyr)
 source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/newfunsT.R")
 P1A<-likert(delphi.Term.combine[,1,drop=FALSE])
 Item<-strwrap(names(P1A$items),width=120)
@@ -278,7 +277,7 @@ p1
 source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/likert_density3.R")
 
 delphi.Term.combine3<-delphi.Term.combine
-for(i in 1:30){names(delphi.Term.combine3)[i]<-paste(strwrap(names(delphi.Term.combine3)[i], width = 150), collapse="\n")}
+for(i in 1:22){names(delphi.Term.combine3)[i]<-paste(strwrap(names(delphi.Term.combine3)[i], width = 150), collapse="\n")}
 Q1A<-likert(delphi.Term.combine3[,1,drop=FALSE])
 
 if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,2,drop=FALSE])==TRUE){likert.density.plot3(Q1A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
@@ -364,8 +363,8 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 
 \clearpage % Better use FloatBarrier here
 %%statement 3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysection{RESPIRATORY SYMPTOMS AND SIGNS}
-\mysubsection{Shortness of breath}{\small{Shortness of breath}}
+
+\mysubsection{RESPIRATORY SYMPTOMS AND SIGNS - Shortness of breath}{\small{Shortness of breath}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -477,7 +476,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 
 \clearpage % Better use FloatBarrier here
 %%statement 5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysubsection{Profound tiredness or fatigue}{\small{Profound tiredness or fatigue}}
+\mysubsection{RESPIRATORY SYMPTOMS AND SIGNS - Profound tiredness or fatigue}{\small{Profound tiredness or fatigue}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -591,7 +590,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \clearpage % Better use FloatBarrier here
 %%statement 7 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysubsection{Oxygen saturation at rest}{\small{Oxygen saturation at rest}}
+\mysubsection{RESPIRATORY SYMPTOMS AND SIGNS - Oxygen saturation at rest}{\small{Oxygen saturation at rest}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -705,7 +704,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \clearpage % Better use FloatBarrier here
 %%statement 9 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysubsection{Oxygen saturation after walking 40 steps}{\small{Oxygen saturation after walking 40 steps}}
+\mysubsection{RESPIRATORY SYMPTOMS AND SIGNS - Oxygen saturation after walking 40 steps}{\small{Oxygen saturation after walking 40 steps}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -818,7 +817,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \clearpage
 %%statement 11 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysubsection{Respiratory rate}{\small{Respiratory rate}}
+\mysubsection{RESPIRATORY SYMPTOMS AND SIGNS - Respiratory rate}{\small{Respiratory rate}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -933,9 +932,8 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \clearpage
 %%statement 13 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysection{FEVER}
+\mysubsection{FEVER - Temperature as measured by patient or carer}{\small{Temperature as measured by patient or carer}}
 
-\mysubsection{Temperature as measured by patient or carer}{\small{Temperature as measured by patient or carer}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -1048,7 +1046,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 
 \clearpage
 %%statement 15 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysubsection{Feverish with shivers or chills}{\small{Feverish with shivers or chills}}
+\mysubsection{FEVER - Feverish with shivers or chills}{\small{Feverish with shivers or chills}}
 
 \begin{figure}[htp!]
 \begin{center}
