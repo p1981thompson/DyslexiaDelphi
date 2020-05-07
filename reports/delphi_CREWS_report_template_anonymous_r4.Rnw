@@ -10,10 +10,10 @@
 \usepackage{lscape}
 \usepackage{subfig}
 \usepackage{setspace}
+\usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{rotating}
 \usepackage{longtable}
-\usepackage{hyperref}
 \usepackage{xcolor,colortbl,color}
 \usepackage{color}
 \usepackage[nogin]{Sweave}
@@ -62,7 +62,7 @@
 
 % ------------------------------------------------- %
 
-\title{\Huge{\textbf{RECAP (v-1)}} \\ \qquad \\\textbf{\large{Remote COVID-19 Assessment for Primary Care (third round)}}}
+\title{\Huge{\textbf{RECAP (v-1)}} \\ \qquad \\\textbf{\large{Remote COVID-19 Assessment for Primary Care (Fourth round)}}}
 
 \author[1]{Trish Greenhalgh\thanks{trish.greenhalgh@phc.ox.ac.uk}}
 \author[2]{Paul Thompson}
@@ -81,10 +81,9 @@ Oxford,
 OX2 6GG,
 UK.}}
 
-
 \renewcommand\Authands{ and }
 
-\date{April 2020}
+\date{May 2020}
 
 
 
@@ -113,10 +112,13 @@ UK.}}
 \thispagestyle{plain}\pagenumbering{roman}
  \tableofcontents
 
+\newpage
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \pagestyle{fancy}
+%\lipsum
 
+%\begin{landscape}
 \newpage
 
 \mysection{Delphi analysis results:Your responses relative to rest of panel}{RECAP} 
@@ -127,37 +129,28 @@ UK.}}
 if("package:likert" %in% search()){detach("package:likert")}
 
 require(readxl)
-qualtrics.terminology.Test<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology_r3.xlsx", sheet="CREWS_T",col_types='text')
+qualtrics.terminology.Test<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology_r4.xlsx", sheet="CREWS_T",col_types='text')
 
 qualtrics.terminology.Test<-as.data.frame(qualtrics.terminology.Test)
 
 ##############################
 
   #statements_R1_ind<-c(seq(20,157,3))
-  statements_T1_ind<-c(seq(8,55,2))
-  comments_ind_T<-c(seq(9,56,2),56)
+  statements_T1_ind<-c(seq(8,16,2),18:20,22,24:26,28,30:32,34,36:38,40,42:44,46)#length=25
+  comments_ind_T<-c(seq(9,17,2),21,23,27,29,33,35,39,41,45,47,48)#length=16
   
   contact.data.T<-qualtrics.terminology.Test[,1:6]
   #add.info2<-qualtrics.data.Test2[,7:19]
   #r.data<-
-  v.data.T<-data.frame(matrix(0, nrow = dim(qualtrics.terminology.Test)[1], ncol = 24))
-  comments.T<-data.frame(matrix(0, nrow = dim(qualtrics.terminology.Test)[1], ncol = 25))
+  v.data.T<-data.frame(matrix(0, nrow = dim(qualtrics.terminology.Test)[1], ncol = 25))
+  comments.T<-data.frame(matrix(0, nrow = dim(qualtrics.terminology.Test)[1], ncol = 16))
 
-# for(i in 1:46)
-# {
-#   r.data[,i]<-qualtrics.data.Test2[,statements_R1_ind[i]]
-#   #colnames(r.data)[i]<-colnames(delphi.data2)[statements_R1_ind[i]]
-# }
-for(i in 1:24)
-{
-  v.data.T[,i]<-qualtrics.terminology.Test[,statements_T1_ind[i]]
-  #colnames(v.data2)[i]<-colnames(delphi.data2)[statements_V1_ind[i]]
-}
+
 for(i in 1:25)
-{
-  comments.T[,i]<-qualtrics.terminology.Test[,comments_ind_T[i]]
-  #colnames(comments)[i]<-colnames(delphi.data2)[comments_ind[i]]
-}
+{v.data.T[,i]<-qualtrics.terminology.Test[,statements_T1_ind[i]]}
+  
+for(i in 1:16)
+{comments.T[,i]<-qualtrics.terminology.Test[,comments_ind_T[i]]}
 
 
 
@@ -173,29 +166,48 @@ delphi.Term.combine.N<-delphi.Term.combine[,-1]
 require(car)
 require(gridExtra)
 
- for(i in ((1:12)*2))
+ for(i in (c(1,3)+1))
    {delphi.Term.combine[,i]<-car::recode(delphi.Term.combine[,i],"1='Yes, as currently worded';2='Yes, but change wording';3='Not sure';4='Probably not';5='Definitely not'")}
 
-for(i in (((1:12)*2)+1))
+for(i in (c(2,4)+1))
    {delphi.Term.combine[,i]<-car::recode(delphi.Term.combine[,i],"1='Appropriate';2='Inappropriate'")}
 
 
-for(i in ((1:12)*2))
+for(i in (c(1,3)+1))
 {delphi.Term.combine[,i] = factor(delphi.Term.combine[,i],levels=c("Yes, as currently worded","Yes, but change wording", "Not sure","Probably not","Definitely not"),ordered=TRUE)}
 
-for(i in (((1:12)*2)+1))
+for(i in (c(2,4)+1))
 {delphi.Term.combine[,i] = factor(delphi.Term.combine[,i],levels=c("Appropriate","Inappropriate"),ordered=TRUE)}
-delphi.data2<-delphi.Term.combine
 
+
+#==========================================#
+for(i in (c(5,8,12,16,20,24)+1))
+{delphi.Term.combine[,i]<-car::recode(delphi.Term.combine[,i],"1='Yes';2='No'")}
+for(i in (c(5,8,12,16,20,24)+1))
+{delphi.Term.combine[,i] = factor(delphi.Term.combine[,i],levels=c("Yes","No"),ordered=TRUE)}
+#==========================================#
+for(i in (c(7,11,15,19,23)+1))
+   {delphi.Term.combine[,i]<-car::recode(delphi.Term.combine[,i],"1='Low';2='Moderate';3='High';4='EXTREMELY HIGH'")}
+for(i in (c(7,11,15,19,23)+1))
+{delphi.Term.combine[,i] = factor(delphi.Term.combine[,i],levels=c("Low","Moderate", "High","EXTREMELY HIGH"),ordered=TRUE)}
+#==========================================#
+for(i in (c(9,13,17,21,25)+1))
+   {delphi.Term.combine[,i]<-car::recode(delphi.Term.combine[,i],"1='Reassure and advise';2='See in hot hub or virtual ward';3='Refer urgently to hospital'")}
+for(i in (c(9,13,17,21,25)+1))
+{delphi.Term.combine[,i] = factor(delphi.Term.combine[,i],levels=c("Reassure and advise","See in hot hub or virtual ward", "Refer urgently to hospital"),ordered=TRUE)}
+#==========================================#
+
+
+delphi.data2<-delphi.Term.combine
 ################################
 
-delphi.Terminology.statements<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/delphi terminology statements_r3.xlsx",sheet="delphi T statements2")
+delphi.Terminology.statements<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/delphi terminology statements_r4.xlsx",sheet="delphi T statements2")
 delphi.Terminology.statements<-as.data.frame(delphi.Terminology.statements)
 #delphi.Terminology.statements<-delphi.Terminology.statements[1:27,1:2]
 
 delphi.Term.combine<-delphi.Term.combine[,-1]
 
-names(delphi.Term.combine)<-delphi.Terminology.statements[1:24,2]
+names(delphi.Term.combine)<-delphi.Terminology.statements[1:25,2]
 
 # delphi.combine$group<-factor(c(rep("Should we include this topic?",dim(r.data)[1]),rep("Do you agree with the statement?",dim(v.data2)[1])),levels=c("Should we include this topic?","Do you agree with the statement?"),ordered=TRUE)
 
@@ -206,41 +218,26 @@ names(delphi.Term.combine2)[1]<-"username"
 @
 
 
+
+
+
 <<results=tex,echo=FALSE>>=
   require(xtable)
   require(readxl)
-delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology_r3.xlsx",sheet="Comments")
+delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology_r4.xlsx",sheet="Comments")
 
 delphi.T.comments <- as.data.frame(delphi.T.comments)
 
-# comment1<-delphi.T.comments[!is.na(delphi.T.comments[,18])==TRUE,c(1,18)]
-# 
-# for(i in 1:length(comment1[,1]))
-# {
-# comment1[i,1]<-paste("$",comment1[i,1],"$",sep="")
-# }
-# 
-# val<-xtable(comment1, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-# 
-# 
-#  rws<-seq(1,length(comment1[,1]),by=2)
-#  addtorow <- list()
-#  addtorow$pos <- as.list(rws)
-#  addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-#print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
- 
 @
-
 
 %%statement 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysubsection{Heart rate (per minute)}{\small{Heart rate}}
+\mysubsection{Trajectory of breathlessness}{\small{Trajectory of breathlessness}}
 
 <<results=hide,echo=FALSE>>=
-require(readxl)
 source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/newfunsT.R")
-delphi.statements<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/delphi terminology statements_r3.xlsx",sheet="delphi T statements3")
+delphi.statements<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/delphi terminology statements_r4.xlsx",sheet="delphi T statements3")
+
 delphi.statements <- as.data.frame(delphi.statements)
 @
 
@@ -253,7 +250,7 @@ require(reshape)
 require(gridExtra)
 require(grid)
 require(ggplot2)
-require(plyr)
+library(plyr)
 source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/newfunsT.R")
 P1A<-likert(delphi.Term.combine[,1,drop=FALSE])
 Item<-strwrap(names(P1A$items),width=120)
@@ -265,6 +262,7 @@ p1<-plot(P1A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid
 # 
 # grid.arrange(p1,phist1,nrow=1,ncol=2,widths=c(0.75,0.25))
 p1
+
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig1A",sep="")}}
 \end{center}
@@ -277,23 +275,25 @@ p1
 source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/likert_density3.R")
 
 delphi.Term.combine3<-delphi.Term.combine
-for(i in 1:24){names(delphi.Term.combine3)[i]<-paste(strwrap(names(delphi.Term.combine3)[i], width = 150), collapse="\n")}
+for(i in 1:25){names(delphi.Term.combine3)[i]<-paste(strwrap(names(delphi.Term.combine3)[i], width = 150), collapse="\n")}
 Q1A<-likert(delphi.Term.combine3[,1,drop=FALSE])
 
 if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,2,drop=FALSE])==TRUE){likert.density.plot3(Q1A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,2,drop=FALSE])==FALSE){likert.density.plot3(Q1A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
+if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,2,drop=FALSE])==FALSE){likert.density.plot3(Q1A, type="density",legend.position="bottom",wrap=110) + geom_vline(xintercept = as.numeric(delphi.Term.combine.N[delphi.Term.combine2$username==panel.member,1]), colour = "red", size=1.5)+theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig1B",sep="")}}
 \end{center}
-\caption{Distribution of responses to statement 1. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,2,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
+\caption{Distribution of responses to statement 1. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,2,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS' response to this question for reference.",sep=""))}}
 \label{fig:oneB}
 \end{figure}
 
 <<results=tex,echo=FALSE>>=
   require(xtable)
   require(readxl)
-delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology_r3.xlsx",sheet="Comments")
-delphi.T.comments<-as.data.frame(delphi.T.comments)
+delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/CREWS_terminology_r4.xlsx",sheet="Comments")
+
+delphi.T.comments <- as.data.frame(delphi.T.comments)
+
 comment1<-delphi.T.comments[!is.na(delphi.T.comments[,2])==TRUE,c(1,2)]
 
 for(i in 1:length(comment1[,1]))
@@ -321,7 +321,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 <<label=fig2A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 P2A<-likert(delphi.Term.combine[,2,drop=FALSE])
 Item<-strwrap(names(P2A$items),width=150)
- p2<-plot(P2A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE)+ facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+p2<-plot(P2A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE)+ facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist2 <- likert.histogram.plot2(P2A)
 # f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
 # 
@@ -329,21 +329,21 @@ Item<-strwrap(names(P2A$items),width=150)
 # 
 # grid.arrange(p2,phist2,ncol=2,widths=c(0.75,0.25))
 p2
+
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig2A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 2. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\caption{Percentage of panel members in each response category to statement 2. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.\Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,2],sep=""))}}
 \label{fig:twoA}
 \end{figure}
 
 
 <<results=tex,echo=FALSE>>=
  # require(xtable)
- # require(readxl)
-#delphi.T.comments<-read_excel("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheet="comment",stringsAsFactors =FALSE)
+ # require(xlsx)
+#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS_delphi\\CREWS data R1 comments.xlsx",sheetName="comment")
 
 comment2<-delphi.T.comments[!is.na(delphi.T.comments[,3])==TRUE,c(1,3)]
-comment2<-as.data.frame(comment2)
 
 for(i in 1:length(comment2[,1]))
 {
@@ -364,7 +364,8 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \clearpage % Better use FloatBarrier here
 %%statement 3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysubsection{RESPIRATORY SYMPTOMS AND SIGNS - Shortness of breath}{\small{Shortness of breath}}
+
+\mysubsection{FEVER - Duration of Temperature}{\small{Duration of Temperature}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -395,18 +396,18 @@ Q3A<-likert(delphi.Term.combine3[,3,drop=FALSE])
 if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,4,drop=FALSE])==TRUE){
 likert.density.plot3(Q3A, type="density",legend.position="bottom",wrap=110) + theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
 if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,4,drop=FALSE])==FALSE){
-likert.density.plot3(Q3A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
+likert.density.plot3(Q3A, type="density",legend.position="bottom",wrap=110) + geom_vline(xintercept = as.numeric(delphi.Term.combine.N[delphi.Term.combine2$username==panel.member,3]), colour = "red", size=1.5)+theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig3B",sep="")}}
 \end{center}
-\caption{Distribution of responses to statement 3. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,4,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
+\caption{Distribution of responses to statement 3. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,4,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS' response to this question for reference.",sep=""))}}
 \label{fig:threeB}
 \end{figure}
 
 <<results=tex,echo=FALSE>>=
  # require(xtable)
  # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
+#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS_delphi\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
 
 comment2<-delphi.T.comments[!is.na(delphi.T.comments[,4])==TRUE,c(1,4)]
 
@@ -444,17 +445,18 @@ p4<-plot(P4A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid
 # 
 # grid.arrange(p4,phist4,ncol=2,widths=c(0.75,0.25))
 p4
+
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig4A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 4. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\caption{Percentage of panel members in each response category to statement 4. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.\Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,4],sep=""))}}
 \label{fig:fourA}
 \end{figure}
 
 <<results=tex,echo=FALSE>>=
  # require(xtable)
  # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
+#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS_delphi\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
 
 comment2<-delphi.T.comments[!is.na(delphi.T.comments[,5])==TRUE,c(1,5)]
 
@@ -476,7 +478,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 
 \clearpage % Better use FloatBarrier here
 %%statement 5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysubsection{RESPIRATORY SYMPTOMS AND SIGNS - Respiratory rate}{\small{Respiratory rate}}
+\mysubsection{Muscle aches}{\small{Muscle aches}}
 
 \begin{figure}[htp!]
 \begin{center}
@@ -496,29 +498,14 @@ p5
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig5A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 5. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\caption{Percentage of panel members in each response category to statement 5.}
 \label{fig:fiveA}
-\end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig5B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
-
-Q5A<-likert(delphi.Term.combine3[,5,drop=FALSE],grouping=delphi.Term.combine3$group)
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,6,drop=FALSE])==TRUE){
-likert.density.plot3(Q5A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,6,drop=FALSE])==FALSE){
-likert.density.plot3(Q5A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig5B",sep="")}}
-\end{center}
-\caption{Distribution of responses to statement 5. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,6,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:fiveB}
 \end{figure}
 
 <<results=tex,echo=FALSE>>=
  # require(xtable)
  # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
+#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS_delphi\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
 
 comment2<-delphi.T.comments[!is.na(delphi.T.comments[,6])==TRUE,c(1,6)]
 
@@ -540,57 +527,39 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 
 \clearpage % Better use FloatBarrier here
 %%statement 6%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysubsection{VIGNETTE - Patient 1}{\small{VIGNETTE - Patient 1}}
+
+\textbf{PATIENT 1}
+ 
+Mrs Rahman (South Asian ethnicity) is 78; she lives with her extended family who are concerned about her. She has had a dry cough and has felt hot for 6 days. Her appetite is poor (she has apparently lost her sense of taste). She spends most of her time in bed and shows no signs of getting better. When you try speak to her, you have no common language but her daughter-in-law says she is not short of breath, just very tired. She says her mother-in-law gets up to go to the toilet, and comes downstairs once a day to watch a TV programme. She says she doesn't look blue or pale. She's been hot and sweaty but has not had uncontrollable shivering, but she is aching quite badly in her back and down her legs, and is very worried. Mrs Patel has well-controlled type 2 diabetes (on metformin). Her BMI is 27 and a recent BP was 130/85. She had stage 2 breast cancer 20 years ago but no recurrence. The family do not have a thermometer, blood pressure machine, oximeter or other equipment, and nobody has access to a video application.
 
 
 \begin{figure}[htp!]
 \begin{center}
-<<label=fig6A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+<<label=fig6A,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-P6A<-likert(delphi.Term.combine[,6,drop=FALSE])
-Item<-strwrap(names(P6A$items),width=150)
-p6<-plot(P6A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist6 <- likert.histogram.plot2(P6A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist6 <- phist6 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p6,phist6,ncol=2,widths=c(0.75,0.25))
-p6
+# P6A<-likert(delphi.Term.combine[,6,drop=FALSE])
+# Item<-strwrap(names(P6A$items),width=150)
+# p6<-plot(P6A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+
+P6A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,6]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+  geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
+  geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
+  labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
+
+P6A
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig6A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 6. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\caption{bar plot of panel members in each response category to statement 6. The percentages shown at the top of each bar are the percentage of respondents in each category.\Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,6],sep=""))}}
 \label{fig:sixA}
 \end{figure}
 
 
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,7])==TRUE,c(1,7)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
 \clearpage % Better use FloatBarrier here
 %%statement 7 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysubsection{HYPOXIA - Oxygen saturation at rest}{\small{Oxygen saturation at rest}}
+
 
 \begin{figure}[htp!]
 \begin{center}
@@ -599,60 +568,17 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 P7A<-likert(delphi.Term.combine[,7,drop=FALSE])
 Item<-strwrap(names(P7A$items),width=150)
 p7<-plot(P7A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-phist7 <- likert.histogram.plot2(P7A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist7 <- phist7 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p7,phist7,ncol=2,widths=c(0.75,0.25))
+
 p7
+
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig7A",sep="")}}
 \end{center}
 \caption{Percentage of panel members in each response category to statement 7. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
 \label{fig:sevenA}
 \end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig7B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-Q7A<-likert(delphi.Term.combine3[,7,drop=FALSE])
-
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,8,drop=FALSE])==TRUE){
-likert.density.plot3(Q7A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,8,drop=FALSE])==FALSE){
-likert.density.plot3(Q7A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig7B",sep="")}}
-\end{center}
-\caption{Distribution of responses to statement 7. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,8,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:sevenB}
-\end{figure}
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,8])==TRUE,c(1,8)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage % Better use FloatBarrier here
+ % Better use FloatBarrier here
 %%statement 8 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -673,7 +599,7 @@ p8
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig8A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 8. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\caption{Percentage of panel members in each response category to statement 8. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,8],sep=""))}}
 \label{fig:eightA}
 \end{figure}
 
@@ -681,9 +607,9 @@ p8
 <<results=tex,echo=FALSE>>=
  # require(xtable)
  # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
+#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS_delphi\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
 
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,9])==TRUE,c(1,9)]
+comment2<-delphi.T.comments[!is.na(delphi.T.comments[,7])==TRUE,c(1,7)]
 
 for(i in 1:length(comment2[,1]))
 {
@@ -704,7 +630,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \clearpage % Better use FloatBarrier here
 %%statement 9 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mysubsection{HYPOXIA - Oxygen saturation after walking 40 steps}{\small{Oxygen saturation after walking 40 steps}}
+
 
 \begin{figure}[htp!]
 \begin{center}
@@ -713,12 +639,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 P9A<-likert(delphi.Term.combine[,9,drop=FALSE])
 Item<-strwrap(names(P9A$items),width=150)
 p9<-plot(P9A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist9 <- likert.histogram.plot2(P9A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist9 <- phist9 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p9,phist9,ncol=2,widths=c(0.75,0.25))
+
 p9
 @
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig9A",sep="")}}
@@ -726,28 +647,14 @@ p9
 \caption{Percentage of panel members in each response category to statement 9. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
 \label{fig:nineA}
 \end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig9B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-Q9A<-likert(delphi.Term.combine3[,9,drop=FALSE])
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,10,drop=FALSE])==TRUE){
-likert.density.plot3(Q9A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,10,drop=FALSE])==FALSE){
-likert.density.plot3(Q9A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig9B",sep="")}}
-\end{center}
-\caption{Distribution of responses to statement 9. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,10,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:nineB}
-\end{figure}
 
 <<results=tex,echo=FALSE>>=
  # require(xtable)
  # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
+#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS_delphi\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
 
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,10])==TRUE,c(1,10)]
+comment2<-delphi.T.comments[!is.na(delphi.T.comments[,8])==TRUE,c(1,8)]
 
 for(i in 1:length(comment2[,1]))
 {
@@ -768,26 +675,226 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \clearpage % Better use FloatBarrier here
 %%statement 10 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\mysubsection{VIGNETTE - Patient 2}{\small{VIGNETTE - Patient 2}}
+
+\textbf{PATIENT 2}
+ 
+Mr Jamieson (African-Caribbean ethnicity) calls you urgently; he is 57 and lives with his wife. He has been unwell for 9 days, but only started feeling really bad yesterday. He has absolutely no energy and finds it hard to breathe, but is wondering if that's due to his asthma (for which he normally takes a Ventolin inhaler). He isn’t out of breath at rest but was very short of breath brushing his teeth this evening, whereas this morning he could do that without a problem. He doesn't sound out of breath on the phone to you, and is able to complete sentences; an attempt at making a video connection fails. He says his peak flow rate is 425 (predicted for age 510; last asthma check 450). He forced himself to get up this morning, and has spent all day in a chair, finding it a struggle even to get to the toilet. He has a BP machine because he's on medication (amlodipine) for high blood pressure. Using his machine, his blood pressure today is 120/70 and pulse 105 (recent clinic values were 148/90 and 78). He's taken his temperature with a mouth thermometer he found in the cupboard but it only reads 35 even though he's sweated so much his wife had to change the sheets. When asked about feeling hot with shivering and chills, he says yes he’s had all those, quite badly on one occasion. His muscles don't ache. He has sickle cell trait, but was told this would never cause him any problems. His BMI is 33, and a recent check-up showed an eGFR of 80.
 
 \begin{figure}[htp!]
 \begin{center}
-<<label=fig10A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+<<label=fig10A,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-P10A<-likert(delphi.Term.combine[,10,drop=FALSE])
-Item<-strwrap(names(P10A$items),width=150)
-p10<-plot(P10A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist10 <- likert.histogram.plot2(P10A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist10 <- phist10 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p10,phist10,ncol=2,widths=c(0.75,0.25))
-p10
+P10A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,10]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+  geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
+  geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
+  labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
+
+P10A
 @
+
 \includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig10A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 10. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\caption{bar plot of panel members in each response category to statement 10. The percentages shown at the top of each bar are the percentage of respondents in each category. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,10],sep=""))}}
 \label{fig:tenA}
+\end{figure}
+
+
+\clearpage
+%%statement 11 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig11A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+
+P11A<-likert(delphi.Term.combine[,11,drop=FALSE])
+Item<-strwrap(names(P11A$items),width=150)
+p11<-plot(P11A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+# phist11 <- likert.histogram.plot2(P11A)
+# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
+# 
+# phist11 <- phist11 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
+# 
+# grid.arrange(p11,phist11,ncol=2,widths=c(0.75,0.25))
+p11
+@
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig11A",sep="")}}
+\end{center}
+\caption{Percentage of panel members in each response category to statement 11.}
+\label{fig:elevenA}
+\end{figure}
+
+
+%%statement 12 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig12A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+
+P12A<-likert(delphi.Term.combine[,12,drop=FALSE])
+Item<-strwrap(names(P12A$items),width=150)
+p12<-plot(P12A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+# phist12 <- likert.histogram.plot2(P12A)
+# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
+# 
+# phist12 <- phist12 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
+# 
+# grid.arrange(p12,phist12,ncol=2,widths=c(0.75,0.25))
+p12
+@
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig12A",sep="")}}
+\end{center}
+\caption{Percentage of panel members in each response category to statement 12. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,12],sep=""))}}
+\label{fig:twelveA}
+\end{figure}
+
+
+<<results=tex,echo=FALSE>>=
+ # require(xtable)
+ # require(xlsx)
+#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS_delphi\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
+
+comment2<-delphi.T.comments[!is.na(delphi.T.comments[,9])==TRUE,c(1,9)]
+
+for(i in 1:length(comment2[,1]))
+{
+comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
+}
+
+val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
+
+
+ rws<-seq(1,length(comment2[,1])-1,by=2)
+ addtorow <- list()
+ addtorow$pos <- as.list(rws)
+ addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
+
+print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
+@
+
+\clearpage
+%%statement 13 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig13A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+
+P13A<-likert(delphi.Term.combine[,13,drop=FALSE])
+Item<-strwrap(names(P13A$items),width=150)
+p13<-plot(P13A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+# phist13 <- likert.histogram.plot2(P13A)
+# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
+# 
+# phist13 <- phist13 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
+# 
+# grid.arrange(p13,phist13,ncol=2,widths=c(0.75,0.25))
+p13
+@
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig13A",sep="")}}
+\end{center}
+\caption{Percentage of panel members in each response category to statement 13. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\label{fig:thirteenA}
+\end{figure}
+
+
+<<results=tex,echo=FALSE>>=
+ # require(xtable)
+ # require(xlsx)
+#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS_delphi\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
+
+comment2<-delphi.T.comments[!is.na(delphi.T.comments[,10])==TRUE,c(1,10)]
+
+for(i in 1:length(comment2[,1]))
+{
+comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
+}
+
+val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
+
+
+ rws<-seq(1,length(comment2[,1])-1,by=2)
+ addtorow <- list()
+ addtorow$pos <- as.list(rws)
+ addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
+
+print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
+@
+
+\clearpage
+
+%%statement 14 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\mysubsection{VIGNETTE - Patient 3}{\small{VIGNETTE - Patient 3}}
+
+\textbf{PATIENT 3}
+ 
+Mrs Finlay (White Irish ethnicity) is 88 and in a care home. She has multimorbidity (ischaemic heart disease, osteoarthritis, chronic pancreatitis and hypothyroidism) and on multiple medications, but her quality of life is good and she is normally mentally sharp. A recent conversation about 'ceiling of care' is documented in her medical record: she would like to be referred to hospital if appropriate. Her carers are concerned because after three days of a low-grade fever (37.5 on tympanic thermometer) and worsening breathlessness (which, since this morning, is present even when lying in bed), she has become delirious. Her blood pressure is 110/65 and pulse 120.
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig14A,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
+
+P14A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,14]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+  geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
+  geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
+  labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
+
+P14A
+@
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig14A",sep="")}}
+\end{center}
+\caption{Bar plot of panel members in each response category to statement 14. The percentages shown at the top of each bar are the percentage of respondents in each category. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,14],sep=""))}}
+\label{fig:fourteenA}
+\end{figure}
+
+\clearpage
+%%statement 15 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig15A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+
+P15A<-likert(delphi.Term.combine[,15,drop=FALSE])
+Item<-strwrap(names(P15A$items),width=150)
+p15<-plot(P15A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+# phist15 <- likert.histogram.plot2(P15A)
+# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
+# 
+# phist15 <- phist15 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
+# 
+# grid.arrange(p15,phist15,ncol=2,widths=c(0.75,0.25))
+p15
+@
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig15A",sep="")}}
+\end{center}
+\caption{Percentage of panel members in each response category to statement 15.}
+\label{fig:fifteenA}
+\end{figure}
+
+
+
+
+%%statement 16 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig16A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+
+P16A<-likert(delphi.Term.combine[,16,drop=FALSE])
+Item<-strwrap(names(P16A$items),width=150)
+p16<-plot(P16A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+
+p16
+@
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig16A",sep="")}}
+\end{center}
+\caption{Percentage of panel members in each response category to statement 16. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,16],sep=""))}}
+\label{fig:sixteenA}
 \end{figure}
 
 
@@ -806,7 +913,7 @@ comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
 val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
 
 
- rws<-ifelse(length(comment2[,1])==1,1,seq(1,length(comment2[,1])-1,by=2))
+ rws<-seq(1,length(comment2[,1])-1,by=2)
  addtorow <- list()
  addtorow$pos <- as.list(rws)
  addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
@@ -815,46 +922,29 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 @
 
 \clearpage
-%%statement 11 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\mysubsection{HYPOXIA - OR profound tiredness or fatigue}{\small{profound tiredness or fatigue}}
+%%statement 17 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{figure}[htp!]
 \begin{center}
-<<label=fig11A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+<<label=fig17A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P11A<-likert(delphi.Term.combine[,11,drop=FALSE])
-Item<-strwrap(names(P11A$items),width=150)
-p11<-plot(P11A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist11 <- likert.histogram.plot2(P11A)
+P17A<-likert(delphi.Term.combine[,17,drop=FALSE])
+Item<-strwrap(names(P17A$items),width=150)
+p17<-plot(P17A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+# phist17 <- likert.histogram.plot2(P17A)
 # f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
 # 
-# phist11 <- phist11 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
+# phist17 <- phist17 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
 # 
-# grid.arrange(p11,phist11,ncol=2,widths=c(0.75,0.25))
-p11
-
+# grid.arrange(p17,phist17,ncol=2,widths=c(0.75,0.25))
+p17
 @
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig11A",sep="")}}
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig17A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 11. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:elevenA}
+\caption{Percentage of panel members in each response category to statement 17. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\label{fig:seventeenA}
 \end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig11B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-Q11A<-likert(delphi.Term.combine3[,11,drop=FALSE])
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,12,drop=FALSE])==TRUE){
-likert.density.plot3(Q11A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,12,drop=FALSE])==FALSE){
-likert.density.plot3(Q11A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig11B",sep="")}}
-\end{center}
-\caption{Distribution of responses to statement 11. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,12,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:elevenB}
-\end{figure}
 
 <<results=tex,echo=FALSE>>=
  # require(xtable)
@@ -880,29 +970,78 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 @
 
 \clearpage
-%%statement 12 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%statement 18 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\mysubsection{VIGNETTE - Patient 4}{\small{VIGNETTE - Patient 4}}
+
+\textbf{PATIENT 4}
+ 
+Mr Hughes is 72 (white British ethnicity) and lives alone. He has been unwell with Covid symptoms for 11 days. He was seen last week in the hot hub clinic because of breathlessness, and supplied with a home oximeter. Today, he feels more breathless than yesterday but says he can still walk around the living room. He's been measuring his saturations daily and the last three days have been 97\%, 96\%, 96\%, but he feels much more tired today than he did yesterday. The oximeter measures his pulse at 98. Using a video app, you measure his respiratory rate at 24. You ask him to take 40 steps around his flat and re-measure his saturation levels. He does this, and says the level is still 96\%, but a minute later it has fallen to 94\%. His temperature with a mouth thermometer is 37.6 and he hasn't had shivers or chills. He had prostate cancer 10 years ago and was treated for depression last year after his wife died. His BMI is 28.
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig18A,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
+
+P18A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,18]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+  geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
+  geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
+  labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
+
+P18A
+@
+
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig18A",sep="")}}
+\end{center}
+\caption{Bar plot of panel members in each response category to statement 18. The percentages shown at the top of each bar are the percentage of respondents in each category. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ",panel.member," was unsure or had no opinion.", sep=""),paste(panel.member,"'s response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,18],sep=""))}}
+\label{fig:eighteenA}
+\end{figure}
+
+\clearpage
+%%statement 19 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig19A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+
+P19A<-likert(delphi.Term.combine[,19,drop=FALSE])
+Item<-strwrap(names(P19A$items),width=150)
+p19<-plot(P19A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+
+p19
+@
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig19A",sep="")}}
+\end{center}
+\caption{Percentage of panel members in each response category to statement 19. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\label{fig:nineteenA}
+\end{figure}
+
+
+
+
+
+%%statement 20 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \begin{figure}[htp!]
 \begin{center}
-<<label=fig12A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+<<label=fig20A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P12A<-likert(delphi.Term.combine[,12,drop=FALSE])
-Item<-strwrap(names(P12A$items),width=150)
-p12<-plot(P12A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist12 <- likert.histogram.plot2(P12A)
+P20A<-likert(delphi.Term.combine[,20,drop=FALSE])
+Item<-strwrap(names(P20A$items),width=150)
+p20<-plot(P20A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+# phist20 <- likert.histogram.plot2(P20A)
 # f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
 # 
-# phist12 <- phist12 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
+# phist20 <- phist20 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
 # 
-# grid.arrange(p12,phist12,ncol=2,widths=c(0.75,0.25))
-
-p12
+# grid.arrange(p20,phist20,ncol=2,widths=c(0.75,0.25))
+p20
 @
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig12A",sep="")}}
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig20A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 12. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:twelveA}
+\caption{Percentage of panel members in each response category to statement 20.\Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,20],sep=""))}}
+\label{fig:twentyA}
 \end{figure}
 
 
@@ -930,46 +1069,30 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 @
 
 \clearpage
-%%statement 13 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\mysubsection{FEVER - Measured temperature}{\small{Measured temperature}}
+%%statement 21 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \begin{figure}[htp!]
 \begin{center}
-<<label=fig13A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+<<label=fig21A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P13A<-likert(delphi.Term.combine[,13,drop=FALSE])
-Item<-strwrap(names(P13A$items),width=150)
-p13<-plot(P13A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist13 <- likert.histogram.plot2(P13A)
+P21A<-likert(delphi.Term.combine[,21,drop=FALSE])
+Item<-strwrap(names(P21A$items),width=150)
+p21<-plot(P21A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+# phist21 <- likert.histogram.plot2(P21A)
 # f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
 # 
-# phist13 <- phist13 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
+# phist21 <- phist21 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
 # 
-# grid.arrange(p13,phist13,ncol=2,widths=c(0.75,0.25))
-p13
+# grid.arrange(p21,phist21,ncol=2,widths=c(0.75,0.25))
+p21
 @
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig13A",sep="")}}
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig21A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 13. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:thirteenA}
+\caption{Percentage of panel members in each response category to statement 21. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\label{fig:twentyoneA}
 \end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig13B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-Q13A<-likert(delphi.Term.combine3[,13,drop=FALSE])
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,14,drop=FALSE])==TRUE){
-likert.density.plot3(Q13A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,14,drop=FALSE])==FALSE){
-likert.density.plot3(Q13A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig13B",sep="")}}
-\end{center}
-\caption{Distribution of responses to statement 13. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,14,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:thirteenB}
-\end{figure}
 
 <<results=tex,echo=FALSE>>=
  # require(xtable)
@@ -996,28 +1119,75 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 
 \clearpage
 
-%%statement 14 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%statement 22 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mysubsection{VIGNETTE - Patient 5}{\small{VIGNETTE - Patient 5}}
+
+\textbf{PATIENT 5}
+ 
+Mr Liu is a 37-year old postgraduate student from Taiwan who lives in a shared house of multiple occupation. He's worried because he has been unwell for 10 days and has a cough and a high fever (measured at 39 with a mouth thermometer). He's also finding it hard to catch his breath – something that's been going on for three or four days. He doesn’t think it’s worse today than yesterday. He doesn't know his housemates well, but he knows two of them have been unwell. He is not registered with your practice so you have no previous records on him, but he tells you he might have been diagnosed with diabetes back in Taiwan, he's not sure. His father had it and he is a bit overweight, though he doesn't know his actual height and weight. He’s been lent an oximeter by one of his housemates and taken a reading – his pulse is 115 and saturation 95\%. On a video call, you think he looks pale and anxious, and his respiratory rate is 22.
+
+\textbf{Patient RECAP score distribution}
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig22A,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
+
+P22A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,22]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+  geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
+  geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
+  labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
+
+P22A
+@
+
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig22A",sep="")}}
+\end{center}
+\caption{Bar plot of panel members in each response category to statement 22. The percentages shown at the top of each bar are the percentage of respondents in each category. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,22],sep=""))}}
+\label{fig:twentytwoA}
+\end{figure}
+
+
+\clearpage
+
+%%statement 23 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[htp!]
+\begin{center}
+<<label=fig23A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+
+P23A<-likert(delphi.Term.combine[,23,drop=FALSE])
+Item<-strwrap(names(P23A$items),width=150)
+p23<-plot(P23A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+
+p23
+@
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig23A",sep="")}}
+\end{center}
+\caption{Percentage of panel members in each response category to statement 23. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\label{fig:twentythreeA}
+\end{figure}
+
+
+
+
+%%statement 24 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \begin{figure}[htp!]
 \begin{center}
-<<label=fig14A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+<<label=fig24A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P14A<-likert(delphi.Term.combine[,14,drop=FALSE])
-Item<-strwrap(names(P14A$items),width=150)
-p14<-plot(P14A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist14 <- likert.histogram.plot2(P14A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist14 <- phist14 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p14,phist14,ncol=2,widths=c(0.75,0.25))
-p14
+P24A<-likert(delphi.Term.combine[,24,drop=FALSE])
+Item<-strwrap(names(P24A$items),width=150)
+p24<-plot(P24A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
+
+p24
 @
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig14A",sep="")}}
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig24A",sep="")}}
 \end{center}
-\caption{Percentage of panel members in each response category to statement 14. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:fourteenA}
+\caption{Percentage of panel members in each response category to statement 24. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,3,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("ANONYMOUS' response to this question for reference was: ",delphi.Term.combine[delphi.Term.combine2$username==panel.member,24],sep=""))}}
+\label{fig:twentyfourA}
 \end{figure}
 
 
@@ -1045,44 +1215,27 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 @
 
 \clearpage
-%%statement 15 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysubsection{FEVER - OR Feverish with shivers or chills}{\small{Feverish with shivers or chills}}
+
+%%statement 25 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \begin{figure}[htp!]
 \begin{center}
-<<label=fig15A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
+<<label=fig25A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P15A<-likert(delphi.Term.combine[,15,drop=FALSE])
-Item<-strwrap(names(P15A$items),width=150)
-p15<-plot(P15A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist15 <- likert.histogram.plot2(P15A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist15 <- phist15 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p15,phist15,ncol=2,widths=c(0.75,0.25))
-p15
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig15A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 15. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:fifteenA}
-\end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig15B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
+P25A<-likert(delphi.Term.combine[,25,drop=FALSE])
+Item<-strwrap(names(P25A$items),width=150)
+p25<-plot(P25A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 
-Q15A<-likert(delphi.Term.combine3[,15,drop=FALSE])
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,16,drop=FALSE])==TRUE){
-likert.density.plot3(Q15A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,16,drop=FALSE])==FALSE){
-likert.density.plot3(Q15A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
+p25
 @
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig15B",sep="")}}
+\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig25A",sep="")}}
 \end{center}
-\caption{Distribution of responses to statement 15. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,16,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:fifteenB}
+\caption{Percentage of panel members in each response category to statement 25. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
+\label{fig:twentyfiveA}
 \end{figure}
+
+
 
 <<results=tex,echo=FALSE>>=
  # require(xtable)
@@ -1109,30 +1262,8 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 
 \clearpage
 
-%%statement 16 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{figure}[htp!]
-\begin{center}
-<<label=fig16A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
-
-P16A<-likert(delphi.Term.combine[,16,drop=FALSE])
-Item<-strwrap(names(P16A$items),width=150)
-p16<-plot(P16A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist16 <- likert.histogram.plot2(P16A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist16 <- phist16 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p16,phist16,ncol=2,widths=c(0.75,0.25))
-p16
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig16A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 16. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:sixteenA}
-\end{figure}
-
+%%statement 26 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mysubsection{Additional comments}{\small{Additional comments}}
 
 <<results=tex,echo=FALSE>>=
  # require(xtable)
@@ -1157,488 +1288,6 @@ val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each st
 print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
 @
 
-\clearpage
-%%statement 17 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysubsection{Muscle pain}{\small{Muscle pain}}
-
-\begin{figure}[htp!]
-\begin{center}
-<<label=fig17A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
-
-P17A<-likert(delphi.Term.combine[,17,drop=FALSE])
-Item<-strwrap(names(P17A$items),width=150)
-p17<-plot(P17A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist17 <- likert.histogram.plot2(P17A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist17 <- phist17 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p17,phist17,ncol=2,widths=c(0.75,0.25))
-p17
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig17A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 17. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:seventeenA}
-\end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig17B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
-
-Q17A<-likert(delphi.Term.combine3[,17,drop=FALSE])
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,18,drop=FALSE])==TRUE){
-likert.density.plot3(Q17A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,18,drop=FALSE])==FALSE){
-likert.density.plot3(Q17A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig17B",sep="")}}
-\end{center}
-\caption{Distribution of responses to statement 17. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,18,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:seventeenB}
-\end{figure}
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,18])==TRUE,c(1,18)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage
-%%statement 18 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{figure}[htp!]
-\begin{center}
-<<label=fig18A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
-
-P18A<-likert(delphi.Term.combine[,18,drop=FALSE])
-Item<-strwrap(names(P18A$items),width=150)
-p18<-plot(P18A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist18 <- likert.histogram.plot2(P18A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist18 <- phist18 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p18,phist18,ncol=2,widths=c(0.75,0.25))
-p18
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig18A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 18. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:eighteenA}
-\end{figure}
-
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,19])==TRUE,c(1,19)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage
-%%statement 19 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysubsection{RISK FACTORS - Is patient on the covid-19 shielded list (or in your opinion, should they be?)}{\small{Is patient on the covid-19 shielded list}}
-
-\begin{figure}[htp!]
-\begin{center}
-<<label=fig19A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
-
-P19A<-likert(delphi.Term.combine[,19,drop=FALSE])
-Item<-strwrap(names(P19A$items),width=150)
-p19<-plot(P19A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist19 <- likert.histogram.plot2(P19A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist19 <- phist19 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p19,phist19,ncol=2,widths=c(0.75,0.25))
-p19
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig19A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 19. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:nineteenA}
-\end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig19B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
-
-Q19A<-likert(delphi.Term.combine3[,19,drop=FALSE])
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,20,drop=FALSE])==TRUE){
-likert.density.plot3(Q19A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,20,drop=FALSE])==FALSE){
-likert.density.plot3(Q19A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig19B",sep="")}}
-\end{center}
-\caption{Distribution of responses to statement 19. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,20,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:nineteenB}
-\end{figure}
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,20])==TRUE,c(1,20)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage
-
-%%statement 20 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{figure}[htp!]
-\begin{center}
-<<label=fig20A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
-
-P20A<-likert(delphi.Term.combine[,20,drop=FALSE])
-Item<-strwrap(names(P20A$items),width=150)
-p20<-plot(P20A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist20 <- likert.histogram.plot2(P20A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist20 <- phist20 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p20,phist20,ncol=2,widths=c(0.75,0.25))
-p20
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig20A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 20. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:twentyA}
-\end{figure}
-
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,21])==TRUE,c(1,21)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage
-%%statement 21 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysubsection{RISK FACTORS - Do they have other risk factors for poor outcome?}{\small{Do they have other risk factors for poor outcome?}}
-
-\begin{figure}[htp!]
-\begin{center}
-<<label=fig21A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
-
-P21A<-likert(delphi.Term.combine[,21,drop=FALSE])
-Item<-strwrap(names(P21A$items),width=150)
-p21<-plot(P21A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist21 <- likert.histogram.plot2(P21A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist21 <- phist21 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p21,phist21,ncol=2,widths=c(0.75,0.25))
-p21
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig21A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 21. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:twentyoneA}
-\end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig21B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
-
-Q21A<-likert(delphi.Term.combine3[,21,drop=FALSE])
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,22,drop=FALSE])==TRUE){
-likert.density.plot3(Q21A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,22,drop=FALSE])==FALSE){
-likert.density.plot3(Q21A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig21B",sep="")}}
-\end{center}
-\caption{Distribution of responses to statement 21. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,22,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:twentyoneB}
-\end{figure}
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,22])==TRUE,c(1,22)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage
-
-%%statement 22 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{figure}[htp!]
-\begin{center}
-<<label=fig22A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
-
-P22A<-likert(delphi.Term.combine[,22,drop=FALSE])
-Item<-strwrap(names(P22A$items),width=150)
-p22<-plot(P22A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist22 <- likert.histogram.plot2(P22A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist22 <- phist22 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p22,phist22,ncol=2,widths=c(0.75,0.25))
-p22
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig22A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 22. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:twentytwoA}
-\end{figure}
-
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,23])==TRUE,c(1,23)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage
-
-%%statement 23 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysubsection{Clinical Concern Component - After assessing the patient, what is your level of clinical concern (regardless of RECAP score)?}{\small{After assessing the patient, what is your level of clinical concern (regardless of RECAP score)?}}
-
-\begin{figure}[htp!]
-\begin{center}
-<<label=fig23A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
-
-P23A<-likert(delphi.Term.combine[,23,drop=FALSE])
-Item<-strwrap(names(P23A$items),width=150)
-p23<-plot(P23A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist21 <- likert.histogram.plot2(P21A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist21 <- phist21 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p21,phist21,ncol=2,widths=c(0.75,0.25))
-p23
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig23A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 23. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:twentythreeA}
-\end{figure}
-\begin{figure}[h!]
-\begin{center}
-<<label=fig23B,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
-
-Q23A<-likert(delphi.Term.combine3[,23,drop=FALSE])
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,24,drop=FALSE])==TRUE){
-likert.density.plot3(Q23A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-if(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,24,drop=FALSE])==FALSE){
-likert.density.plot3(Q23A, type="density",legend.position="bottom",wrap=110) +theme_bw()+ theme(legend.position="none", axis.text.x = element_text(angle = 30, hjust = 1))}
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig23B",sep="")}}
-\end{center}
-\caption{Distribution of responses to statement 23. \Sexpr{ifelse(is.na(delphi.Term.combine2[delphi.Term.combine2$username==panel.member,24,drop=FALSE]),paste(" If no line is present, this indicates that ANONYMOUS was unsure or had no opinion.", sep=""),paste("The bold vertical line coloured red is ANONYMOUS's response to this question for reference.",sep=""))}}
-\label{fig:twentythreeB}
-\end{figure}
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,24])==TRUE,c(1,24)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage
-
-%%statement 24 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{figure}[htp!]
-\begin{center}
-<<label=fig24A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
-
-P24A<-likert(delphi.Term.combine[,24,drop=FALSE])
-Item<-strwrap(names(P24A$items),width=150)
-p24<-plot(P24A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
-# phist22 <- likert.histogram.plot2(P22A)
-# f<-function(x,y){if(x=="Error"){"Error"} else "Number of \npanel responding"}
-# 
-# phist22 <- phist22 + theme(panel.background = element_rect(size = 1, color = "grey70", fill = NA),axis.text.y = element_blank())+facet_grid(.~Item, labeller=f)
-# 
-# grid.arrange(p22,phist22,ncol=2,widths=c(0.75,0.25))
-p24
-@
-\includegraphics[scale=0.6]{\Sexpr{paste(panel.member,"-fig24A",sep="")}}
-\end{center}
-\caption{Percentage of panel members in each response category to statement 24. The percentages shown at each end of the scale are the cumulative percentages for the top and bottom three categories respectively.}
-\label{fig:twentyfourA}
-\end{figure}
-
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,25])==TRUE,c(1,25)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage
-
-%%statement 25 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mysubsection{Additional comments}{\small{Additional comments}}
-
-
-<<results=tex,echo=FALSE>>=
- # require(xtable)
- # require(xlsx)
-#delphi.T.comments<-read.xlsx("H:\\DVMB\\CREWS\\CREWS data R1 comments.xlsx",sheetName="comment",stringsAsFactors =FALSE)
-
-comment2<-delphi.T.comments[!is.na(delphi.T.comments[,26])==TRUE,c(1,26)]
-
-for(i in 1:length(comment2[,1]))
-{
-comment2[i,1]<-paste("$",comment2[i,1],"$",sep="")
-}
-
-val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each statement.")
-
-
- rws<-seq(1,length(comment2[,1])-1,by=2)
- addtorow <- list()
- addtorow$pos <- as.list(rws)
- addtorow$command <- c(rep("\\rowcolor[gray]{0.95}", length(rws)))
-
-print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
-@
-
-\clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \my2subsection{Contact Information}{Contact Information}
 
@@ -1664,7 +1313,7 @@ Email.~trish.greenhalgh@phc.ox.ac.uk}
 
 \thispagestyle{empty}\section*{Copyright Information}
 % Mark 'Abstract' both even and odd markers
-This copy of the RECAP v-1 Delphi results (round 3) has been supplied on the condition that anyone who consults it
+This copy of the RECAP v-1 Delphi results (round 4) has been supplied on the condition that anyone who consults it
 recognizes that its copyright rests with the authors and that no quotation from the report or information derived from it may be published without prior consent.
 
 \end{document}
