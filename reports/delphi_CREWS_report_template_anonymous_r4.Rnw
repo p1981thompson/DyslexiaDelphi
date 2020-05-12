@@ -542,7 +542,7 @@ Mrs Rahman (South Asian ethnicity) is 78; she lives with her extended family who
 # Item<-strwrap(names(P6A$items),width=150)
 # p6<-plot(P6A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 
-P6A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,6]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+P6A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[-which(is.na(delphi.Term.combine[,6])),6]),aes(x=factor(RECAP_score,levels=c(0:16))))+
   geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
   geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
   labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
@@ -565,7 +565,7 @@ P6A
 \begin{center}
 <<label=fig7A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P7A<-likert(delphi.Term.combine[,7,drop=FALSE])
+P7A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,7])),7,drop=FALSE])
 Item<-strwrap(names(P7A$items),width=150)
 p7<-plot(P7A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 
@@ -586,7 +586,7 @@ p7
 \begin{center}
 <<label=fig8A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P8A<-likert(delphi.Term.combine[,8,drop=FALSE])
+P8A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,8])),8,drop=FALSE])
 Item<-strwrap(names(P8A$items),width=150)
 p8<-plot(P8A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist8 <- likert.histogram.plot2(P8A)
@@ -636,7 +636,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \begin{center}
 <<label=fig9A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P9A<-likert(delphi.Term.combine[,9,drop=FALSE])
+P9A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,9])),9,drop=FALSE])
 Item<-strwrap(names(P9A$items),width=150)
 p9<-plot(P9A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 
@@ -685,7 +685,7 @@ Mr Jamieson (African-Caribbean ethnicity) calls you urgently; he is 57 and lives
 \begin{center}
 <<label=fig10A,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-P10A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,10]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+P10A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[-which(is.na(delphi.Term.combine[,10])),10]),aes(x=factor(RECAP_score,levels=c(0:16))))+
   geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
   geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
   labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
@@ -708,7 +708,7 @@ P10A
 \begin{center}
 <<label=fig11A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P11A<-likert(delphi.Term.combine[,11,drop=FALSE])
+P11A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,11])),11,drop=FALSE])
 Item<-strwrap(names(P11A$items),width=150)
 p11<-plot(P11A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist11 <- likert.histogram.plot2(P11A)
@@ -733,7 +733,7 @@ p11
 \begin{center}
 <<label=fig12A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P12A<-likert(delphi.Term.combine[,12,drop=FALSE])
+P12A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,12])),12,drop=FALSE])
 Item<-strwrap(names(P12A$items),width=150)
 p12<-plot(P12A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist12 <- likert.histogram.plot2(P12A)
@@ -781,7 +781,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \begin{center}
 <<label=fig13A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P13A<-likert(delphi.Term.combine[,13,drop=FALSE])
+P13A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,13])),13,drop=FALSE])
 Item<-strwrap(names(P13A$items),width=150)
 p13<-plot(P13A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist13 <- likert.histogram.plot2(P13A)
@@ -837,7 +837,7 @@ Mrs Finlay (White Irish ethnicity) is 88 and in a care home. She has multimorbid
 \begin{center}
 <<label=fig14A,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-P14A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,14]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+P14A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[-which(is.na(delphi.Term.combine[,14])),14]),aes(x=factor(RECAP_score,levels=c(0:16))))+
   geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
   geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
   labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
@@ -858,7 +858,7 @@ P14A
 \begin{center}
 <<label=fig15A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P15A<-likert(delphi.Term.combine[,15,drop=FALSE])
+P15A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,15])),15,drop=FALSE])
 Item<-strwrap(names(P15A$items),width=150)
 p15<-plot(P15A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist15 <- likert.histogram.plot2(P15A)
@@ -885,7 +885,7 @@ p15
 \begin{center}
 <<label=fig16A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P16A<-likert(delphi.Term.combine[,16,drop=FALSE])
+P16A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,16])),16,drop=FALSE])
 Item<-strwrap(names(P16A$items),width=150)
 p16<-plot(P16A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 
@@ -928,7 +928,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \begin{center}
 <<label=fig17A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P17A<-likert(delphi.Term.combine[,17,drop=FALSE])
+P17A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,17])),17,drop=FALSE])
 Item<-strwrap(names(P17A$items),width=150)
 p17<-plot(P17A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist17 <- likert.histogram.plot2(P17A)
@@ -983,7 +983,7 @@ Mr Hughes is 72 (white British ethnicity) and lives alone. He has been unwell wi
 \begin{center}
 <<label=fig18A,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-P18A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,18]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+P18A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[-which(is.na(delphi.Term.combine[,18])),18]),aes(x=factor(RECAP_score,levels=c(0:16))))+
   geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
   geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
   labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
@@ -1004,7 +1004,7 @@ P18A
 \begin{center}
 <<label=fig19A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P19A<-likert(delphi.Term.combine[,19,drop=FALSE])
+P19A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,19])),19,drop=FALSE])
 Item<-strwrap(names(P19A$items),width=150)
 p19<-plot(P19A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 
@@ -1027,7 +1027,7 @@ p19
 \begin{center}
 <<label=fig20A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P20A<-likert(delphi.Term.combine[,20,drop=FALSE])
+P20A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,20])),20,drop=FALSE])
 Item<-strwrap(names(P20A$items),width=150)
 p20<-plot(P20A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist20 <- likert.histogram.plot2(P20A)
@@ -1076,7 +1076,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \begin{center}
 <<label=fig21A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P21A<-likert(delphi.Term.combine[,21,drop=FALSE])
+P21A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,21])),21,drop=FALSE])
 Item<-strwrap(names(P21A$items),width=150)
 p21<-plot(P21A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 # phist21 <- likert.histogram.plot2(P21A)
@@ -1133,7 +1133,7 @@ Mr Liu is a 37-year old postgraduate student from Taiwan who lives in a shared h
 \begin{center}
 <<label=fig22A,fig=TRUE,echo=FALSE,include=F,height=4,width=11>>=
 
-P22A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[,22]),aes(x=factor(RECAP_score,levels=c(0:16))))+
+P22A <- ggplot(data.frame(RECAP_score=delphi.Term.combine[-which(is.na(delphi.Term.combine[,22])),22]),aes(x=factor(RECAP_score,levels=c(0:16))))+
   geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
   geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
   labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
@@ -1156,7 +1156,7 @@ P22A
 \begin{center}
 <<label=fig23A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P23A<-likert(delphi.Term.combine[,23,drop=FALSE])
+P23A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,23])),23,drop=FALSE])
 Item<-strwrap(names(P23A$items),width=150)
 p23<-plot(P23A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 
@@ -1178,7 +1178,7 @@ p23
 \begin{center}
 <<label=fig24A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P24A<-likert(delphi.Term.combine[,24,drop=FALSE])
+P24A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,24])),24,drop=FALSE])
 Item<-strwrap(names(P24A$items),width=150)
 p24<-plot(P24A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 
@@ -1223,7 +1223,7 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 \begin{center}
 <<label=fig25A,fig=TRUE,echo=FALSE,include=F,height=3,width=11>>=
 
-P25A<-likert(delphi.Term.combine[,25,drop=FALSE])
+P25A<-likert(delphi.Term.combine[-which(is.na(delphi.Term.combine[,25])),25,drop=FALSE])
 Item<-strwrap(names(P25A$items),width=150)
 p25<-plot(P25A,ordered=FALSE,wrap=110,centered=F, plot.percents=TRUE) + facet_grid(~Item, scale="free", labeller=label_wrap_gen(width=120)) + theme(axis.text.y = element_blank())
 
@@ -1287,7 +1287,7 @@ val<-xtable(comment2, align = "|l|p{3cm}|p{12cm}|",caption="Comments for each st
 
 print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.rownames=FALSE,caption.placement="top", sanitize.text.function = function(x) x,tabular.environment="longtable",floating=FALSE)
 @
-
+\clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \my2subsection{Contact Information}{Contact Information}
 
