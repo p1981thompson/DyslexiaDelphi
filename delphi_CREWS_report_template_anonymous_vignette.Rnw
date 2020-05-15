@@ -204,7 +204,7 @@ names(delphi.Term.combine2)[1]<-"username"
 <<results=tex,echo=FALSE>>=
   require(xtable)
   require(readxl)
-delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/vignette data/vignette_data.xlsx",sheet="Comments")
+delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/vignette data/vignette_data_text.xlsx",sheet="Comments")
 
 delphi.T.comments <- as.data.frame(delphi.T.comments)
 
@@ -237,6 +237,21 @@ require(readxl)
 source("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/reports/newfunsT.R")
 delphi.statements<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/vignette data/delphi recap statements_vignette.xlsx",sheet="delphi T statements3")
 delphi.statements <- as.data.frame(delphi.statements)
+@
+
+<<results=hide,echo=FALSE>>=
+require(readxl)
+vignette_scores<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/vignette data/QuizResponses.xlsx", sheet="Sheet")
+
+##############################
+
+ggplot(data.frame(RECAP_score=vignette_scores$Points_P1),aes(x=factor(RECAP_score,levels=c(0:16))))+
+  geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
+  geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
+  labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
+
+
+
 @
 
 %\subsubsection{\Sexpr{delphi.statements[1,2]}}
@@ -273,7 +288,7 @@ p1
 <<results=tex,echo=FALSE>>=
   require(xtable)
   require(readxl)
-delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/vignette data/vignette_data.xlsx",sheet="Comments")
+delphi.T.comments<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/vignette data/vignette_data_text.xlsx",sheet="Comments")
 delphi.T.comments<-as.data.frame(delphi.T.comments)
 comment1<-delphi.T.comments[!is.na(delphi.T.comments[,2])==TRUE,c(1,2)]
 
@@ -898,6 +913,21 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 %%statement 18 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mysubsection{Vignettes: Patient 2}{\small{Patient 2}}
 
+
+<<results=hide,echo=FALSE>>=
+require(readxl)
+vignette_scores<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/vignette data/QuizResponses.xlsx", sheet="Sheet")
+
+##############################
+
+ggplot(data.frame(RECAP_score=vignette_scores$Points_P2),aes(x=factor(RECAP_score,levels=c(0:16))))+
+  geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
+  geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
+  labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
+
+
+
+@
 
 \begin{figure}[htp!]
 \begin{center}
@@ -1545,6 +1575,22 @@ print(val, add.to.row=addtorow, include.colnames=T,size="scriptsize",include.row
 %%statement 35 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \mysubsection{Vignettes: Patient 3}{\small{Patient 3}}
+
+<<results=hide,echo=FALSE>>=
+require(readxl)
+vignette_scores<-read_excel("/Volumes/PSYHOME/PSYRES/pthompson/DVMB/CREWS_delphi/test data/vignette data/QuizResponses.xlsx", sheet="Sheet")
+
+##############################
+
+ggplot(data.frame(RECAP_score=vignette_scores$Points_P3),aes(x=factor(RECAP_score,levels=c(0:16))))+
+  geom_bar(aes(fill=RECAP_score,y = (..count..)/sum(..count..))) +
+  geom_text(aes(y = ((..count..)/sum(..count..)), label = scales::percent((..count..)/sum(..count..))), stat = "count", vjust = -0.25) +
+  labs(y = "Percent", x = "RECAP Score")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(drop=FALSE)
+
+
+
+@
+
 
 \begin{figure}[htp!]
 \begin{center}
